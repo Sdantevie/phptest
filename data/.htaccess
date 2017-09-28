@@ -1,0 +1,15 @@
+#RewriteEngine On
+# you can add whatever extensions you want routed to your php script
+#RewriteCond %{REQUEST_URI} \.(exe|doc|docx|zip|pdf)$ [NC]
+#RewriteRule ^(.*)?$ /push-file.php?enc_request=$1 [L]
+
+### Allow limited access
+RewriteCond %{REQUEST_URI} !\.(jpe?g|png|exe|doc|docx|zip|pdf|php|xml|mp3|mp4|gif|json|txt|srt)$ [NC]
+RewriteRule .* - [F,L]
+
+
+### protect htaccess
+<Files .htaccess>
+ Order Deny,Allow
+ Deny from all
+</Files>

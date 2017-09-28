@@ -1,0 +1,38 @@
+# Necessary to prevent problems when using a controller named "index" and having a root index.php
+# more here: http://stackoverflow.com/q/20918746/1114320
+Options -MultiViews
+
+# turn rewriting on
+RewriteEngine On
+#Header set Access-Control-Allow-Origin "*"
+
+# When using the script within a sub-folder, put this path here, like /mysubfolder/
+# If your app is in the root of your web folder, then please delete this line or comment it out
+
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
+
+# source: http://www.lowest-common-denominator.com/2010/01/http_access_control_to_multipl.php
+# - replace `domain1.com` and `domain2.com`
+# - add more domains by separating each domain with a pipe `|`
+# - escape dot `.` with a backslash
+
+#<IfModule mod_headers.c>
+    #SetEnvIf Origin "^http(s)?://(.+\.)?(www.ngexchanger\.com|control.ngexchanger\.com|dashboard.ngexchanger\.com)$" origin_is=$0
+    #Header always set Access-Control-Allow-Origin %{origin_is}e env=origin_is
+#</IfModule>
+
+
+### don't allow access to htaccess itself ###
+<Files .htaccess>
+ Order Deny,Allow
+ Deny from all
+</Files>
+
+

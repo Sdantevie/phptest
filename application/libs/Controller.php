@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * This is the "base controller class". All other "real" controllers extend this class.
+ * Whenever a controller is created, we also
+ * 1. initialize a session
+ * 2. check if the user is not logged in anymore (session timeout) but has a cookie
+ * 3. create a database connection (that will be passed to all models that need a database connection)
+ * 4. create a view object
+ */
+class Controller
+{
+    function __construct()
+    {
+      // create database connection
+        try {
+            $this->db = new Database();
+        } catch (PDOException $e) {
+            throw new Exception('Database connection could not be established.', 1);
+        
+        }
+    }
+
+    /**
+     * loads the model with the given name.
+     * @param $name string name of the model
+     * @param $params request array from client
+     * @param $injectModel inject a model into this model
+     */
+    public function loadModel($name,$params)
+    {
+        $path = MODELS_PATH . strtolower($name) . '_model.php';
+
+        if (file_exists($path)) {
+            require MODELS_PATH . strtolower($name) . '_model.php';
+            // The "Model" has a capital letter as this is the second part of the model class name,
+            // all models have names like "LoginModel"
+            $modelName = $name . 'Model';
+            // return the new model object while passing the database connection to the model
+            return new $modelName($this->db,$params);
+        }
+    }
+
+
+}

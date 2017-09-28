@@ -1,0 +1,9 @@
+
+# ignore database manager #
+phpLiteAdmin/*
+
+#ignore database and files inside it
+data/database/*
+
+#ignore the vendor
+vendor/*

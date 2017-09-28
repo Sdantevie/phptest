@@ -1,0 +1,15 @@
+#RewriteEngine On
+# you can add whatever extensions you want routed to your php script
+
+RewriteRule ^(.*\.(?:jpg|png|gif|jpeg))$ munee.php?files=/$1 [L,QSA,NC]
+
+### Allow limited access
+RewriteCond %{REQUEST_URI} !\.(jpe?g|png|gif|css|js|ttf|ico|txt|otf|eot|svg|woff|mp3|mp4|gif)$ [NC]
+RewriteRule .* - [F,L]
+
+
+### protect htaccess
+<Files .htaccess>
+ Order Deny,Allow
+ Deny from all
+</Files>
